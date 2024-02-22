@@ -6,14 +6,22 @@ import { TbPlaylist } from "react-icons/tb";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
 import useUploadModal from "@/hooks/useUploadModal";
+import { Song } from "@/types";
+import MediaItem from "./MediaItem";
 
-const Library = () => {
+interface LibraryProps {
+  songs: Song[];
+}
+
+const Library: React.FC<LibraryProps> = ({ 
+  songs 
+}) => {
   const authModal = useAuthModal();
   const uploadModal = useUploadModal();
   const { user } = useUser();
 
   const onClick = () => {
-     if(!user) {
+    if (!user) {
       return authModal.onOpen();
     }
 
@@ -22,9 +30,10 @@ const Library = () => {
     return uploadModal.onOpen();
   };
 
-  return ( 
+  return (
     <div className="flex flex-col">
-      <div className="
+      <div
+        className="
         flex
         items-center
         justify-between
@@ -32,14 +41,16 @@ const Library = () => {
         py-4
       "
       >
-        <div className="
+        <div
+          className="
           inline-flex
           items-center
           gap-x-2
-        ">
-          <TbPlaylist className="text-neutral-400" size={26}/>
+        "
+        >
+          <TbPlaylist className="text-neutral-400" size={26} />
           <p
-           className="
+            className="
            text-neutral-400
            font-medium
            text-md
@@ -49,24 +60,36 @@ const Library = () => {
           </p>
         </div>
 
-        <AiOutlinePlus onClick={onClick} size={20} className="
+        <AiOutlinePlus
+          onClick={onClick}
+          size={20}
+          className="
           text-neutral-400
           cursor-pointer
           hover:text-white
           transition
-        "/>
+        "
+        />
       </div>
-      <div className="
+      <div
+        className="
         flex
         flex-col
         gap-y-2
         mt-4
         px-3
-      ">
-        List of songs!
+      "
+      >
+        {songs.map((item) => (
+          <MediaItem 
+            onClick={() => {}} 
+            key={item.id} 
+            data={item} 
+          />
+        ))}
       </div>
     </div>
-   );
-}
+  );
+};
  
 export default Library;
